@@ -1,2 +1,3 @@
 *.class
 /servers/PubNub_Loader/target
+/utils/configs_out
