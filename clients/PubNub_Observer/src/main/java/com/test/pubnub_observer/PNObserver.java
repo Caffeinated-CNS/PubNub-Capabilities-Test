@@ -30,6 +30,8 @@ public class PNObserver {
 		PNConnUtils.addObservers(pubnub);
 		
 		PNConnUtils.subscribeAll(pnConnTuple);
+		
+		// Note - App does not currently disconnect and will need to be killed manually
 	}
 
 }
