@@ -3,3 +3,6 @@
 /utils/configs_out
 /utils/YAMLConfigCreator/configs_out
 /clients/PubNub_Listener/configs
+servers/PubNub_Loader/.classpath
+servers/PubNub_Loader/.classpath
+/servers/PubNub_Loader/configs

@@ -1,4 +1,4 @@
-package com.test.yaml_config_creator.load_target_classes;
+package com.test.pubnub_loader.config;
 
 import lombok.ToString;
 
