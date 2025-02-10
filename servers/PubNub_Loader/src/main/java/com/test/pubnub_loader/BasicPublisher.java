@@ -46,7 +46,7 @@ public class BasicPublisher {
 					// Connect event. You can do stuff like publish, and know you'll get it.
 					// Or just use the connected event to confirm you are subscribed for
 					// UI / internal notifications, etc
-					channel.publish("Test Message").async(result -> {
+					channel.publish("Test Message @ " + LocalDateTime.now()).async(result -> {
 						result.onSuccess(res -> {
 							System.out.println("Published at: " + res.getTimetoken());
 							
