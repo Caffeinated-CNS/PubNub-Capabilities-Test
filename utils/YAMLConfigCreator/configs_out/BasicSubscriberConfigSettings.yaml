@@ -1,0 +1,13 @@
+---
+pubNubUser: "basic_listener_username"
+pubNubSubscribeKey: "subscription_key_text"
+pubNubSubscriptions:
+- channelName: "Channel1"
+  cursor: null
+  receivePresenceEvents: false
+- channelName: "Channel2"
+  cursor: "1"
+  receivePresenceEvents: false
+- channelName: "Channel3"
+  cursor: null
+  receivePresenceEvents: false

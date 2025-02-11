@@ -1,0 +1,5 @@
+# Example config file
+pubNubUser: test_pub                # Subscriber username
+pubNubPublishKey: pub-key-text      # Replace with Publisher key text
+pubNubSubscribeKey: sub-key-text    # Replace with Publisher key text
+pubNubPublishChannel: Channel2      # Channel to connect to

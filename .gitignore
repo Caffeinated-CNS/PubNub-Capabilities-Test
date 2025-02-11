@@ -1,8 +1,6 @@
 *.class
 /servers/PubNub_Loader/target
-/utils/configs_out
-/utils/YAMLConfigCreator/configs_out
-/clients/PubNub_Listener/configs
 servers/PubNub_Loader/.classpath
-servers/PubNub_Loader/.classpath
-/servers/PubNub_Loader/configs
+clients/PubNub_Listener/configs/BasicListener.yaml
+clients/PubNub_Observer/configs/PNObserver.yaml
+servers/PubNub_Loader/configs/BasicPublisher.yaml
