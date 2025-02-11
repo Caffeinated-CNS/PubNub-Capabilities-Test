@@ -2,13 +2,11 @@
 # Example config file
 pubNubUser: "test_listener"             # Subscriber username
 pubNubSubscribeKey: "sub-key-text"      # Replace with Subscriber key text
+cursor: 17392513309612033      # Optional parameter to grab history if needed
 pubNubSubscriptions:
 - channelName: "Channel1"      # First channel name to connect to
-  cursor: null                 # Cursor number to start pulling messages from channel at, null turns off cursor (i.e., pull from connection time forward only)
   receivePresenceEvents: false # Turn on / off PresenceEvents from channel
 - channelName: "Channel2"
-  cursor: "1"
   receivePresenceEvents: false
 - channelName: "Channel3"
-  cursor: null
   receivePresenceEvents: false
