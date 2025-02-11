@@ -8,11 +8,11 @@ import com.pubnub.api.UserId;
 import com.pubnub.api.enums.PNStatusCategory;
 import com.pubnub.api.java.PubNub;
 import com.pubnub.api.java.v2.PNConfiguration;
+import com.pubnub.api.java.v2.callbacks.StatusListener;
 import com.pubnub.api.java.v2.entities.Channel;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.test.pubnub_loader.config.BasicPublisherConfigSettings;
 import com.test.pubnub_loader.config.ConfigLoader;
-import com.pubnub.api.java.v2.callbacks.StatusListener;
 
 public class BasicPublisher {
 	private final static DateTimeFormatter LOG_DATETIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -49,14 +49,16 @@ public class BasicPublisher {
 					channel.publish("Test Message @ " + LocalDateTime.now()).async(result -> {
 						result.onSuccess(res -> {
 							System.out.println("Published at: " + res.getTimetoken());
-							
+
 							pnConnTuple.getPubNubObj().unsubscribeAll();
-							System.out.println("Ending Basic PubNub Publisher at: " + LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
+							System.out.println("Ending Basic PubNub Publisher at: "
+									+ LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
 							System.exit(0);
 						}).onFailure(exception -> {
 							System.out.println("Failed to publish at: " + exception.getMessage());
 							pnConnTuple.getPubNubObj().unsubscribeAll();
-							System.out.println("Ending Basic PubNub Publisher at: " + LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
+							System.out.println("Ending Basic PubNub Publisher at: "
+									+ LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
 							System.exit(0);
 						});
 					});
@@ -64,8 +66,8 @@ public class BasicPublisher {
 			}
 
 		});
-		
-        channel.subscription().subscribe();
+
+		channel.subscription().subscribe();
 
 	}
 
