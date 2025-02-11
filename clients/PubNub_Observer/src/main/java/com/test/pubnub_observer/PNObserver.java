@@ -3,7 +3,6 @@ package com.test.pubnub_observer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.pubnub.api.java.PubNub;
 import com.test.pubnub_observer.config.PNObserverConfigSettings;
 import com.test.pubnub_observer.config.YAMLConfigLoader;
 import com.test.pubnub_observer.utils.connections.PNConnTupleMultiChannel;
@@ -24,13 +23,17 @@ public class PNObserver {
 		System.out.println("Settings: \n\t" + configSettings.toString());
 
 		// Setup connection to PubNub
-		PNConnTupleMultiChannel pnConnTuple = PNConnUtils.pubNubConnectionSetup(configSettings);
-		PubNub pubnub = pnConnTuple.getPubNubObj();
+		if (configSettings.areOptionsSet()) {
+			System.out.println("Loading with subscription options.");
+			PNConnUtils.subscribeAllWOptions(configSettings);
+		} else {
+			System.out.println("Loading without subscription options.");
+			PNConnTupleMultiChannel pnConnTuple = PNConnUtils.pubNubConnectionSetup(configSettings);
 
-		PNConnUtils.addObservers(pubnub);
-		
-		PNConnUtils.subscribeAll(pnConnTuple);
-		
+			PNConnUtils.addObservers(pnConnTuple);
+			PNConnUtils.subscribeAll(pnConnTuple);
+		}
+
 		// Note - App does not currently disconnect and will need to be killed manually
 	}
 

@@ -9,6 +9,10 @@ import com.pubnub.api.java.v2.entities.Channel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/**
+ * Tuple return object for holding both the PubNub object and the list of
+ * channels to connect to on set {@link #pubNubObj} {@link com.pubnub.api.java.PubNub} instance.
+ */
 @NoArgsConstructor
 public class PNConnTupleMultiChannel {
 	@NonNull

@@ -2,6 +2,7 @@ package com.test.pubnub_observer.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -17,6 +18,8 @@ public class PNObserverConfigSettings {
 	private String pubNubSubscribeKey;
 	@NonNull
 	private ArrayList<PubNubSubscription> pubNubSubscriptions = new ArrayList<>();
+
+	private Long cursor;
 
 	@JsonGetter
 	public String getPubNubUser() {
@@ -58,4 +61,23 @@ public class PNObserverConfigSettings {
 		this.pubNubSubscriptions.addAll(pubNubSubscriptions);
 	}
 
+	@JsonGetter
+	public Long getCursor() {
+		return cursor;
+	}
+
+	@JsonSetter
+	public void setCursor(Long cursor) {
+		this.cursor = cursor;
+	}
+
+	public boolean areOptionsSet() {
+		for (PubNubSubscription pnSub : pubNubSubscriptions) {
+			if (pnSub.isReceivePresenceEvents() || pnSub.getFilterMode() > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

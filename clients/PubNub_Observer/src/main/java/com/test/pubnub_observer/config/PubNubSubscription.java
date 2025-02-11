@@ -5,18 +5,16 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@RequiredArgsConstructor(staticName = "of")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PubNubSubscription {
 	@NonNull
-	private String channelName;
-	private String cursor = null;
+	private String channelName = "";
 	private boolean receivePresenceEvents = false;
+	private int filterMode = 0;
 
 	@JsonGetter
 	public String getChannelName() {
@@ -28,20 +26,19 @@ public class PubNubSubscription {
 	}
 
 	@JsonGetter
-	public String getCursor() {
-		return cursor;
-	}
-
-	public void setCursor(String cursor) {
-		this.cursor = cursor;
-	}
-
-	@JsonGetter
 	public boolean isReceivePresenceEvents() {
 		return receivePresenceEvents;
 	}
 
 	public void setReceivePresenceEvents(boolean receivePresenceEvents) {
 		this.receivePresenceEvents = receivePresenceEvents;
+	}
+
+	public int getFilterMode() {
+		return filterMode;
+	}
+
+	public void setFilterMode(int filterMode) {
+		this.filterMode = filterMode;
 	}
 }

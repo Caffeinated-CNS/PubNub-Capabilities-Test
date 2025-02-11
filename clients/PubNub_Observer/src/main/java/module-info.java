@@ -13,4 +13,5 @@ module pubnub_listener {
 	requires pubnub.gson.api;
 	requires pubnub.kotlin.core.api.jvm;
 	requires com.fasterxml.jackson.annotation;
+	requires kotlin.stdlib;
 }
