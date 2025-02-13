@@ -33,23 +33,23 @@ A usual workflow would be to:
 		3. pubNubSubscribeKey string with your "Subscribe key" string from your PubNub "Keysets" page.
 		4. secret string with your "Secret key" string from your PubNub "Keysets" page.
 		5. Time to Live for access token, units are minutes.
-		6. channelGrants is the direct channel names or patterns + permissions to enable anyone with the Access Token to access.  ** Note: if you have presence enabled you need to include the -pnpres version of the channels you are listening to (e.g., Channel2 & Channe2-pnpres). **
+		6. channelGrants is the direct channel names or patterns + permissions to enable anyone with the Access Token to access.  ** Note: if you have presence enabled you need to include the -pnpres version of the channels you are listening to (e.g., Channel2 & Channel2-pnpres). **
 	3. Run ** utils/PubNub_TokenGen/Build_n_Run.bat **, provided your maven is on your classpath, it will compile and execute the Access Token generator app.  ** Note: this should be run in an existing command prompt, if run via explorer it immediately closes after printing the token... **
 5. Re-run observer with Access Token to start listening for messages.
 	1. Take the Access Token string from the generator step 4.3, and update ** clients/PubNub_Observer/configs/PNObserver.yaml **.
 	2. Run ** clients/PubNub_Observer/Build_n_Run.bat **, provided your maven is on your classpath, it will compile and execute the PubNub_Observer app and end with something like
 		
-		> Loading configured channels: 
-		>	Channel1
-		>		Subscription opts: PubNubSubscription(channelName=Channel1, receivePresenceEvents=false, filterMode=0)
-		>	Channel2
-		>		Subscription opts: PubNubSubscription(channelName=Channel2, receivePresenceEvents=false, filterMode=1)
-		>	Channel3
-		>		Subscription opts: PubNubSubscription(channelName=Channel3, receivePresenceEvents=false, filterMode=0)
-		>	Connected to channel(s): 
-		>		Channel1
-		>		Channel2
-		>		Channel3 
+			Loading configured channels: 
+				Channel1
+					Subscription opts: PubNubSubscription(channelName=Channel1, receivePresenceEvents=false, filterMode=0)
+				Channel2
+					Subscription opts: PubNubSubscription(channelName=Channel2, receivePresenceEvents=false, filterMode=1)
+				Channel3
+					Subscription opts: PubNubSubscription(channelName=Channel3, receivePresenceEvents=false, filterMode=0)
+				Connected to channel(s): 
+					Channel1
+					Channel2
+					Channel3 
 	
 6. Re-run BasicPublisher with config to message on an Observer channel
 	1. Run ** servers/PubNub_Loader/Build_n_Run.bat **, provided your maven is on your classpath, it will compile and execute the BasicPublisher app and submit a plain text message like 
