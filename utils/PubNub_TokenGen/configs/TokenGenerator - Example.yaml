@@ -1,0 +1,19 @@
+---
+pubNubUser: "test_listener"
+pubNubPublishKey: "pub-key-text"
+pubNubSubscribeKey: "sub-key-text"
+secret: "sec-key-text"
+ttl: 10                     # Integer value in minutes for Access Token to be usable
+channelGrants:
+- channelName: "Channel1"   # Note only a channel name or pattern is allowed per entry, not both.
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
+- channelName: "Channel2"   # Note only a channel name or pattern is allowed per entry, not both.
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
+- channelName: "Channel3"   # Note only a channel name or pattern is allowed per entry, not both.
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
