@@ -1,0 +1,19 @@
+---
+pubNubUser: "test_listener"
+pubNubPublishKey: "pub-example-key"
+pubNubSubscribeKey: "sub-example-key"
+secret: "sec-key-text"
+ttl: 10
+channelGrants:
+- channelName: "Channel1"
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
+- channelName: "Channel2"
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
+- channelName: "Channel3"
+  channelPattern: ""
+  readEnabled: true
+  writeEnabled: false
