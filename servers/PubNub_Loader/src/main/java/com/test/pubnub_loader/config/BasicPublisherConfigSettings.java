@@ -4,10 +4,11 @@ import lombok.ToString;
 
 @ToString
 public class BasicPublisherConfigSettings {
-	private String pubNubUser;
-	private String pubNubPublishKey;
-	private String pubNubPublishChannel;
-	private String pubNubSubscribeKey;
+	private String pubNubUser = null;
+	private String pubNubPublishKey = null;
+	private String pubNubPublishChannel = null;
+	private String pubNubSubscribeKey = null;
+	private String secret = null;
 
 	public String getPubNubPublishChannel() {
 		return pubNubPublishChannel;
@@ -39,6 +40,14 @@ public class BasicPublisherConfigSettings {
 
 	public void setPubNubSubscribeKey(String pubNubSubscribeKey) {
 		this.pubNubSubscribeKey = pubNubSubscribeKey;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 
 }

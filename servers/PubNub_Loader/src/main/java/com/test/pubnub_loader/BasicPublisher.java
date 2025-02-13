@@ -31,17 +31,18 @@ public class BasicPublisher {
 		PNConnTuple pnConnTuple = pubNubConnectionSetup(configSettings);
 
 		// Blocking publish message
-//		try {
 		Channel channel = pnConnTuple.getChannel();
-		// PNPublishResult pnPublishResult = channel.publish("Test Message").sync();
-
 		PubNub pn = pnConnTuple.getPubNubObj();
+
 		pn.addListener(new StatusListener() {
 
 			@Override
 			public void status(PubNub pubnub, PNStatus status) {
 				if (status.getCategory() == PNStatusCategory.PNUnexpectedDisconnectCategory) {
 					// This event happens when radio / connectivity is lost
+					System.out.println("Issue with connection: " + status.getCategory());
+					pnConnTuple.getPubNubObj().unsubscribeAll();
+					System.exit(-1);
 				} else if (status.getCategory() == PNStatusCategory.PNConnectedCategory) {
 					// Connect event. You can do stuff like publish, and know you'll get it.
 					// Or just use the connected event to confirm you are subscribed for
@@ -77,6 +78,10 @@ public class BasicPublisher {
 		PNConfiguration.Builder configBuilder = PNConfiguration.builder(new UserId(configSettings.getPubNubUser()),
 				configSettings.getPubNubSubscribeKey());
 		configBuilder.publishKey(configSettings.getPubNubPublishKey());
+
+		if (configSettings.getSecret() != null) {
+			configBuilder.secretKey(configSettings.getSecret());
+		}
 
 		PNConfiguration pnConfiguration = configBuilder.build();
 		PubNub pubnub = PubNub.create(pnConfiguration);
