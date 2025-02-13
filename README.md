@@ -11,6 +11,9 @@ Targeting staying within the limitations of the free tier / trial usage on PubNu
 - YAMLConfigCreator
 	- Make externalizing configurations via YAML easier to write and update within code.
 
+- PubNub_TokenGen
+	- YAML configurable Acess Token generator, tokens will be required for observer app config.
+
 ---
 
 **servers/** folder contains example apps for:
