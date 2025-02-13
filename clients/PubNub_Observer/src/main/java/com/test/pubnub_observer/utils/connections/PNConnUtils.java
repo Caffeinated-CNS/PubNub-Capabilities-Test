@@ -31,9 +31,18 @@ public class PNConnUtils {
 			PNConfiguration.Builder configBuilder = PNConfiguration.builder(new UserId(configSettings.getPubNubUser()),
 					configSettings.getPubNubSubscribeKey());
 
-			PNConfiguration pnConfiguration = configBuilder.build();
-			return PubNub.create(pnConfiguration);
+			// configBuilder.filterExpression("");
+			// configBuilder.dedupOnSubscribe(false);
 
+			PNConfiguration pnConfiguration = configBuilder.build();
+
+			PubNub pubNub = PubNub.create(pnConfiguration);
+
+			if (configSettings.getAccessToken() != null) {
+				pubNub.setToken(configSettings.getAccessToken());
+			}
+			
+			return pubNub;
 		} catch (PubNubException ex) {
 			throw new RuntimeException("Failed to initialize PubNub object.", ex);
 		}
@@ -79,6 +88,9 @@ public class PNConnUtils {
 					});
 
 					System.out.println("Status: " + status.toString());
+
+					// Quit as there is likely no recovery
+					System.exit(-1);
 				}
 			}
 		});
@@ -121,8 +133,10 @@ public class PNConnUtils {
 
 			@Override
 			public void presence(PubNub pubnub, PNPresenceEventResult presence) {
-				System.out.println("Presence event on channel: '" + presence.getChannel() + "' Subscription: '" +presence.getSubscription() + " User: '" + presence.getUuid() + "' Event: '"
-						+ presence.getEvent() + "' At time: " + presence.getTimetoken() + " Occupancy: " + presence.getOccupancy());
+				System.out.println("Presence event on channel: '" + presence.getChannel() + "' Subscription: '"
+						+ presence.getSubscription() + "' User: '" + presence.getUuid() + "' Event: '"
+						+ presence.getEvent() + "' At time: " + presence.getTimetoken() + " Occupancy: "
+						+ presence.getOccupancy());
 			}
 		});
 
@@ -131,14 +145,17 @@ public class PNConnUtils {
 	/**
 	 * Subscribe to all channels with default options.
 	 * 
-	 * @param pnConnTuple
-	 * @throws PubNubException
+	 * @param pnConnTuple PubNub & channels list tuple object for changing setup
+	 *                    config
+	 * @return PubNub object used to setup connection for future reference.
 	 */
-	public static void subscribeAll(PNConnTupleMultiChannel pnConnTuple) {
+	public static PubNub subscribeAll(PNConnTupleMultiChannel pnConnTuple) {
 
 		(pnConnTuple.getChannels()).forEach(curChannel -> {
 			curChannel.subscription().subscribe();
 		});
+
+		return pnConnTuple.getPubNubObj();
 
 	}
 
@@ -147,9 +164,10 @@ public class PNConnUtils {
 	 * {@link com.test.pubnub_observer.utils.connections.PNConnTupleMultiChannel}
 	 * instance.
 	 * 
-	 * @param configSettings subscription settings source
+	 * @param configSettings settings object for changing setup config
+	 * @return PubNub object used to setup connection for future reference.
 	 */
-	public static void subscribeAllWOptions(PNObserverConfigSettings configSettings) {
+	public static PubNub subscribeAllWOptions(PNObserverConfigSettings configSettings) {
 		PubNub pubnub = pubNubBasicInit(configSettings);
 
 		addObservers(pubnub);
@@ -166,6 +184,8 @@ public class PNConnUtils {
 
 			curSubscription.subscribe();
 		});
+
+		return pubnub;
 	}
 
 	@SuppressWarnings("static-access")

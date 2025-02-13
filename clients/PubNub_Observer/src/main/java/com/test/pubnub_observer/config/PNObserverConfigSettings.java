@@ -2,7 +2,6 @@ package com.test.pubnub_observer.config;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -19,7 +18,14 @@ public class PNObserverConfigSettings {
 	@NonNull
 	private ArrayList<PubNubSubscription> pubNubSubscriptions = new ArrayList<>();
 
+	private String accessToken = null;
+
 	private Long cursor;
+
+	// Debugging / extended info print settings.
+	private boolean setCheckUserChannelMemberships = true;
+	private boolean setPrintChannelMetadata = true;
+	private boolean setListOtherChannelMembers = true;
 
 	@JsonGetter
 	public String getPubNubUser() {
@@ -69,6 +75,46 @@ public class PNObserverConfigSettings {
 	@JsonSetter
 	public void setCursor(Long cursor) {
 		this.cursor = cursor;
+	}
+
+	public boolean isSetCheckUserMemberships() {
+		return setCheckUserChannelMemberships;
+	}
+
+	public void setSetCheckUserMemberships(boolean setCheckUserMemberships) {
+		this.setCheckUserChannelMemberships = setCheckUserMemberships;
+	}
+
+	public boolean isSetListOtherChannelMembers() {
+		return setListOtherChannelMembers;
+	}
+
+	public void setSetListOtherChannelMembers(boolean setListOtherChannelMembers) {
+		this.setListOtherChannelMembers = setListOtherChannelMembers;
+	}
+
+	public boolean isSetPrintChannelMetadata() {
+		return setPrintChannelMetadata;
+	}
+
+	public void setSetPrintChannelMetadata(boolean setPrintChannelMetadata) {
+		this.setPrintChannelMetadata = setPrintChannelMetadata;
+	}
+
+	public boolean isSetCheckUserChannelMemberships() {
+		return setCheckUserChannelMemberships;
+	}
+
+	public void setSetCheckUserChannelMemberships(boolean setCheckUserChannelMemberships) {
+		this.setCheckUserChannelMemberships = setCheckUserChannelMemberships;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	public boolean areOptionsSet() {
