@@ -5,3 +5,6 @@ clients/PubNub_Listener/configs/BasicListener.yaml
 clients/PubNub_Observer/configs/PNObserver.yaml
 servers/PubNub_Loader/configs/BasicPublisher.yaml
 utils/PubNub_TokenGen/configs/TokenGenerator.yaml
+utils/PubNub_TokenGen/.classpath
+clients/PubNub_Observer/.classpath
+clients/PubNub_Listener/.classpath
