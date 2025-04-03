@@ -1,11 +1,16 @@
 package com.test.pubnub_observer.utils.connections;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import com.pubnub.api.PubNubException;
 import com.pubnub.api.UserId;
 import com.pubnub.api.enums.PNStatusCategory;
 import com.pubnub.api.java.PubNub;
 import com.pubnub.api.java.models.consumer.objects_api.membership.PNMembershipResult;
 import com.pubnub.api.java.models.consumer.objects_api.uuid.PNUUIDMetadataResult;
+import com.pubnub.api.java.util.TimetokenUtil;
 import com.pubnub.api.java.v2.PNConfiguration;
 import com.pubnub.api.java.v2.callbacks.EventListener;
 import com.pubnub.api.java.v2.callbacks.StatusListener;
@@ -41,7 +46,7 @@ public class PNConnUtils {
 			if (configSettings.getAccessToken() != null) {
 				pubNub.setToken(configSettings.getAccessToken());
 			}
-			
+
 			return pubNub;
 		} catch (PubNubException ex) {
 			throw new RuntimeException("Failed to initialize PubNub object.", ex);
@@ -100,9 +105,12 @@ public class PNConnUtils {
 			public void message(PubNub pubnub, PNMessageResult message) {
 				// Handle new message stored in message.message
 
-				System.out.println("Channel: '" + message.getChannel() + "' on subscription: '"
-						+ message.getSubscription() + "' - Received message at time: " + message.getTimetoken()
-						+ " - With Content: " + message.getMessage());
+				System.out.println(
+						"Channel: '" + message.getChannel() + "' on subscription: '" + message.getSubscription()
+								+ "' - Received message at timetoken: " + message.getTimetoken() + " - DateTime: "
+								+ LocalDateTime.ofInstant(TimetokenUtil.timetokenToInstant(message.getTimetoken()),
+										ZoneId.of("UTC")).format(DateTimeFormatter.ISO_DATE_TIME)
+								+ " - With Content: " + message.getMessage());
 			}
 
 			@Override

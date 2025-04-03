@@ -1,22 +1,28 @@
 package com.test.pubnub_loader;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.pubnub.api.PubNubException;
 import com.pubnub.api.UserId;
-import com.pubnub.api.enums.PNStatusCategory;
 import com.pubnub.api.java.PubNub;
 import com.pubnub.api.java.v2.PNConfiguration;
-import com.pubnub.api.java.v2.callbacks.StatusListener;
 import com.pubnub.api.java.v2.entities.Channel;
-import com.pubnub.api.models.consumer.PNStatus;
 import com.test.pubnub_loader.config.BasicPublisherConfigSettings;
 import com.test.pubnub_loader.config.ConfigLoader;
 
 public class BasicPublisher {
 	private final static DateTimeFormatter LOG_DATETIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 	private final static String BASIC_PUB_CONFIG = "./configs/BasicPublisher.yaml";
+
+	// Adjust this higher to prove that 'channel.subscription().subscribe()' is
+	// required before submitting all the messages to PubNub
+	private final static long SLEEP_TEST = 50; // in msec
 
 	public static void main(String[] args) throws Exception {
 		// Preamble
@@ -30,46 +36,46 @@ public class BasicPublisher {
 		// Setup connection to PubNub
 		PNConnTuple pnConnTuple = pubNubConnectionSetup(configSettings);
 
-		// Blocking publish message
-		Channel channel = pnConnTuple.getChannel();
-		PubNub pn = pnConnTuple.getPubNubObj();
+		// Create threadpool to submit messages en masse
+		System.out.println("Running with thread count of: " + configSettings.getThreadCount());
+		ExecutorService threadPoolService = Executors.newFixedThreadPool(configSettings.getThreadCount());
 
-		pn.addListener(new StatusListener() {
+		// Install listeners
+		ArrayList<MessageLoader> messageLoaders = new ArrayList<>();
+		for (int i = 0; i < configSettings.getThreadCount(); i++) {
+			MessageLoader newML = MessageLoader.of(pnConnTuple, configSettings);
+			// Unneeded, but would fail the app faster if all connections would issues.
+//			pnConnTuple.getPubNubObj().addListener(newML);
+			messageLoaders.add(newML);
+		}
 
-			@Override
-			public void status(PubNub pubnub, PNStatus status) {
-				if (status.getCategory() == PNStatusCategory.PNUnexpectedDisconnectCategory) {
-					// This event happens when radio / connectivity is lost
-					System.out.println("Issue with connection: " + status.getCategory());
-					pnConnTuple.getPubNubObj().unsubscribeAll();
-					System.exit(-1);
-				} else if (status.getCategory() == PNStatusCategory.PNConnectedCategory) {
-					// Connect event. You can do stuff like publish, and know you'll get it.
-					// Or just use the connected event to confirm you are subscribed for
-					// UI / internal notifications, etc
-					channel.publish("Test Message @ " + LocalDateTime.now()).async(result -> {
-						result.onSuccess(res -> {
-							System.out.println("Published at: " + res.getTimetoken());
+		// Connect to configured channels and submit messages
+		pnConnTuple.getChannel().subscription().subscribe();
+		System.out.println("Subscribed to channel.");
 
-							pnConnTuple.getPubNubObj().unsubscribeAll();
-							System.out.println("Ending Basic PubNub Publisher at: "
-									+ LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
-							System.exit(0);
-						}).onFailure(exception -> {
-							System.out.println("Failed to publish at: " + exception.getMessage());
-							pnConnTuple.getPubNubObj().unsubscribeAll();
-							System.out.println("Ending Basic PubNub Publisher at: "
-									+ LocalDateTime.now().format(LOG_DATETIME_FORMATTER));
-							System.exit(0);
-						});
-					});
-				} /* handle other statuses */
-			}
+		// Sleep to space out subscription setup & message submission
+		if (SLEEP_TEST > 0L) {
+			System.out.println("Sleeping " + SLEEP_TEST + "msec.");
+			Thread.sleep(SLEEP_TEST);
+		}
 
+		// Submit all Message Loaders to threadpool
+		messageLoaders.forEach((curML) -> {
+			threadPoolService.submit(curML);
 		});
 
-		channel.subscription().subscribe();
+		// Tell threads to finish up
+		threadPoolService.shutdown();
+		// Wait for threadpool to finish their work for up to config timeout
+		threadPoolService.awaitTermination(configSettings.getSubmissionTimeoutSecounds(), TimeUnit.SECONDS);
 
+		LocalDateTime endDT = LocalDateTime.now();
+		System.out.println(
+				"Ending thread " + Thread.currentThread().getId() + " at: " + endDT.format(LOG_DATETIME_FORMATTER)
+						+ ".  Duration in msecs: " + Duration.between(startDT, endDT).toMillis() + " Messages Sent: "
+						+ (configSettings.getThreadCount() * configSettings.getPerThreadMessageCount()));
+
+		System.exit(0);
 	}
 
 	private static PNConnTuple pubNubConnectionSetup(BasicPublisherConfigSettings configSettings)

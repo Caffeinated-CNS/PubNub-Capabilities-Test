@@ -5,3 +5,6 @@ pubNubPublishKey: "pub-key-text"      # Replace with Publisher key text
 pubNubSubscribeKey: "sub-key-text"    # Replace with Publisher key text
 pubNubPublishChannel: "Channel2"      # Channel to connect to
 secret: "sec-key-text"
+perThreadMessageCount: 20
+threadCount: 5
+submissionTimeoutSecounds: 60

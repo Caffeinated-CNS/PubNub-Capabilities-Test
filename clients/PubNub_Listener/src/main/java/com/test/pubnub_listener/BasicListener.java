@@ -3,9 +3,6 @@ package com.test.pubnub_listener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.pubnub.api.PubNubException;
-import com.pubnub.api.UserId;
-import com.pubnub.api.enums.PNStatusCategory;
 import com.pubnub.api.java.PubNub;
 import com.pubnub.api.java.v2.PNConfiguration;
 import com.pubnub.api.java.v2.callbacks.EventListener;
@@ -14,6 +11,12 @@ import com.pubnub.api.java.v2.entities.Channel;
 import com.pubnub.api.java.v2.subscriptions.Subscription;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
+import com.pubnub.api.PubNubException;
+import com.pubnub.api.UserId;
+import com.pubnub.api.enums.PNStatusCategory;
+import com.google.gson.JsonElement;
+
+
 import com.test.pubnub_listener.config.BasicSubscriberConfigSettings;
 import com.test.pubnub_listener.config.ConfigLoader;
 
@@ -65,7 +68,7 @@ public class BasicListener {
 					// message.getSubscription()
 				}
 
-				com.google.gson.JsonElement receivedMessageObject = message.getMessage();
+				JsonElement receivedMessageObject = message.getMessage();
 
 				System.out.println("Received message at time: " + message.getTimetoken() + " Content: "
 						+ receivedMessageObject.toString());

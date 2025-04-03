@@ -10,6 +10,6 @@ module pubnub_loader {
 	requires com.fasterxml.jackson.dataformat.yaml;
 	requires static lombok;
 	requires java.base;
-	requires pubnub.gson.api;
 	requires pubnub.kotlin.core.api.jvm;
+	requires pubnub.gson.api;
 }
